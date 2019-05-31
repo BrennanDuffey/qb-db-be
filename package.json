@@ -19,6 +19,7 @@
   "homepage": "https://github.com/BrennanDuffey/qb-db-be#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "joi": "^14.3.1"
   },
@@ -26,6 +27,7 @@
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
     "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
     "babel-jest": "^24.8.0",
     "supertest": "^4.0.2"
   }
