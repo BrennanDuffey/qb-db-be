@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-const tossups = require('./tossups.js');
+const { tossups } = require('./tossups.js');
 
 const app = express();
 
@@ -18,21 +18,23 @@ app.get('/api/v1/tossups', (request, response) => {
 });
 
 app.get('/api/v1/tossups/:category/:difficulty/:count', (request, response) => {
-  const categoryIds = request.params.category.split('&').forEach(categoryId => categoryId = parseInt(categoryId));
-  const difficultyIds = request.params.difficulty.split('&').forEach(difficultyId => difficultyId = parseInt(difficultyId));
+  const categoryIds = request.params.category
+    .split('&').map(categoryId => (parseInt(categoryId)));
+  const difficultyIds = request.params.difficulty
+    .split('&').map(difficultyId => (parseInt(difficultyId)));
   const count = request.params.count;
 
+  console.log('categoryIds', categoryIds);
+  console.log('difficultyIds', difficultyIds);
+
   let filteredTossups = [];
-  for (let i = 0; i < app.locals.length; i++) {
-    if (categoryIds.includes(app.locals.tossups[i].category.id)) {
-      filteredTossups.push(app.locals.tossups[i]);
+  app.locals.tossups.forEach(tossup => {
+    if (categoryIds.includes(tossup.category.id)) {
+      filteredTossups.push(tossup);
     }
-  }
-  for (let i = 0; i < filteredTossups; i++) {
-    if (!difficultyIds.includes(filteredTossups[i].tournament.difficulty_num)) {
-      filteredTossups.splice(i, 1);
-    }
-  }
+  })
+
+  filteredTossups = filteredTossups.filter(tossup => difficultyIds.includes(tossup.tournament.difficulty_num))
 
   const randomNum = Math.floor(Math.random() * (filteredTossups.length - count))
   const tossups = filteredTossups.splice(randomNum, count)
