@@ -24,8 +24,6 @@ app.get('/api/v1/tossups/:category/:difficulty/:count', (request, response) => {
     .split('&').map(difficultyId => (parseInt(difficultyId)));
   const count = request.params.count;
 
-  console.log('categoryIds', categoryIds);
-  console.log('difficultyIds', difficultyIds);
 
   let filteredTossups = [];
   app.locals.tossups.forEach(tossup => {
