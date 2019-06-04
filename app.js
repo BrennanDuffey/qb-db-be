@@ -11,17 +11,20 @@ app.use(express.json());
 
 app.locals.tossups = tossups
 
-app.get('/api/v1/tossups', (request, response) => {
+app.get('/api/v1/tossups/:count', (request, response) => {
+  const count = request.params.count;
   const randomNum = Math.floor(Math.random() * 735)
-  const tossups = [...app.locals.tossups].splice(randomNum, 15)
+  const tossups = [...app.locals.tossups].splice(randomNum, count)
   return response.status(200).json({ tossups })
 });
 
-app.get('/api/v1/tossups/:category/:difficulty/:count', (request, response) => {
+app.get('/api/v1/tossups/:category/:count', (request, response) => {
   const categoryIds = request.params.category
     .split('&').map(categoryId => (parseInt(categoryId)));
-  const difficultyIds = request.params.difficulty
-    .split('&').map(difficultyId => (parseInt(difficultyId)));
+ 
+  // const difficultyIds = request.params.difficulty
+  //   .split('&').map(difficultyId => (parseInt(difficultyId)));
+
   const count = request.params.count;
 
 
@@ -32,7 +35,7 @@ app.get('/api/v1/tossups/:category/:difficulty/:count', (request, response) => {
     }
   })
 
-  filteredTossups = filteredTossups.filter(tossup => difficultyIds.includes(tossup.tournament.difficulty_num))
+  // filteredTossups = filteredTossups.filter(tossup => difficultyIds.includes(tossup.tournament.difficulty_num))
 
   const randomNum = Math.floor(Math.random() * (filteredTossups.length - count))
   const tossups = filteredTossups.splice(randomNum, count)
